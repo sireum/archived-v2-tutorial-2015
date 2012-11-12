@@ -62,12 +62,12 @@ trait StressTest[S <: KiasanStatePart[S]] extends TestFramework {
   }
 
   def translatePathConditionsToZ3(s : S) = {
-    val sw = new StringWriter
-    val et = MyIntExtension.z3BackEndPart.expTranslator(new PrintWriter(sw))
+    val sb = new StringBuilder
+    val et = MyIntExtension.z3BackEndPart.expTranslator(sb)
     for (pc <- s.pathConditions.reverse) {
       et(pc)
     }
-    sw.toString
+    sb.toString
   }
 
   val topi = Topi.create(new TopiConfig {

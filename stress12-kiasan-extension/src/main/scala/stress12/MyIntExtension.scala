@@ -19,27 +19,39 @@ object MyIntExtension extends ExtensionCompanion {
     new MyIntExtension(config)
 
   val z3BackEndPart = new TopiProcess.BackEndPart {
-    def expTranslator(pw : PrintWriter) = {
+    def expTranslator(sb : StringBuilder) = {
+      val lineSep = System.getProperty("line.separator")
+
+        @inline
+        implicit def i2string(i : Int) = i.toString
+
+        @inline
+        def println(ss : String*) {
+          for (s <- ss)
+            sb.append(s)
+          sb.append(lineSep)
+        }
+
       val numSet = new java.util.BitSet
 
         def declareConst(num : Int) {
           if (!numSet.get(num)) {
             numSet.set(num)
-            pw.println("(declare-const i!" + num + " Int)")
+            println("(declare-const i!", num, " Int)")
           }
         }
 
         def bin(freshNum : Int, n : String, m : String, op : String) {
           declareConst(freshNum)
-          pw.println("(assert (= i!" + freshNum + " (" + op + " " + n + " " + m + ")))")
+          println("(assert (= i!", freshNum, " (", op, " ", n, " ", m, ")))")
         }
 
         def sbin(v1 : String, v2 : String, op : String) {
-          pw.println("(assert (" + op + " " + v1 + " " + v2 + "))")
+          println("(assert (", op, " ", v1, " ", v2, "))")
         }
 
         def nsbin(v1 : String, v2 : String, op : String) {
-          pw.println("(assert (not (" + op + " " + v1 + " " + v2 + ")))")
+          println("(assert (not (", op, " ", v1, " ", v2, ")))")
         }
 
         def i2s : Exp --> String = {
@@ -58,7 +70,7 @@ object MyIntExtension extends ExtensionCompanion {
         // BEGIN TODO
         def unMinus(freshNum : Int, n : String) {
           declareConst(freshNum)
-          pw.println("(assert (= i!" + freshNum + " (- " + n + ")))")
+          println("(assert (= i!", freshNum, " (- ", n, ")))")
         }
       // END TODO
 
