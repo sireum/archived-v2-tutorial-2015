@@ -70,11 +70,5 @@ trait StressTest[S <: KiasanStatePart[S]] extends TestFramework {
     sb.toString
   }
 
-  val topi = Topi.create(new TopiConfig {
-    def solver = TopiSolver.Z3
-    def mode = TopiMode.Process
-    def waitTime : Long = 10000
-    def backEndParts = List(MyIntExtension.z3BackEndPart)
-    def exeFile = TopiSolver.Z3.exeFile
-  })
+  val topi = Topi.create(TopiSolver.Z3, TopiMode.Process, 10000, MyIntExtension)
 }

@@ -10,15 +10,16 @@ import org.sireum.kiasan.extension.annotation._
 import org.sireum.kiasan.state._
 import org.sireum.util._
 import org.sireum.topi.process._
-
 import java.io._
+import org.sireum.topi.annotation._
 
 object MyIntExtension extends ExtensionCompanion {
   def create[S <: KiasanStatePart[S]](
     config : EvaluatorConfiguration[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]]) =
     new MyIntExtension(config)
 
-  val z3BackEndPart = new TopiProcess.BackEndPart {
+  @BackEnd(value = "Z3", mode = "Process")
+  def z3BackEndPart = new TopiProcess.BackEndPart {
     def expTranslator(sb : StringBuilder) = {
       val lineSep = System.getProperty("line.separator")
 
