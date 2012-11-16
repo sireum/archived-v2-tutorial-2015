@@ -222,7 +222,7 @@ final class MyIntExtension[S <: KiasanStatePart[S]](
     }) CI(1) else CI(0)
   }
 
-  val comp = Map("==" -> "!=", "!=" -> "==", ">" -> "<=", ">=" -> "<", "<" -> ">=", "<=" -> ">=")
+  val comp = Map("==" -> "!=", "!=" -> "==", ">" -> "<=", ">=" -> "<", "<" -> ">=", "<=" -> ">")
 
   def opRHelper(s : S, v : Value, opR : String, w : Value) : ISeq[(S, Value)] = {
     ilist(
