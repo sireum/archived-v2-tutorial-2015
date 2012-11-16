@@ -20,8 +20,9 @@ object MyIntExtension extends ExtensionCompanion {
 
   @BackEnd(value = "Z3", mode = "Process")
   def z3BackEndPart = new TopiProcess.BackEndPart {
-    def expTranslator(sb : StringBuilder) = {
+    def expTranslator(sb : StringBuilder, mm : MMap[Immutable, Int]) = {
       val lineSep = System.getProperty("line.separator")
+      var lastNum = mm.getOrElse(KINT_TYPE_URI, -1)
 
         @inline
         implicit def i2string(i : Int) = i.toString
@@ -33,12 +34,12 @@ object MyIntExtension extends ExtensionCompanion {
           sb.append(lineSep)
         }
 
-      val numSet = new java.util.BitSet
-
         def declareConst(num : Int) {
-          if (!numSet.get(num)) {
-            numSet.set(num)
-            println("(declare-const i!", num, " Int)")
+          if (num > lastNum) {
+            for (i <- lastNum + 1 to num)
+              println("(declare-const i!", i, " Int)")
+            lastNum = num
+            mm(KINT_TYPE_URI) = lastNum
           }
         }
 
@@ -103,7 +104,7 @@ object MyIntExtension extends ExtensionCompanion {
     }
 
     def stateRewriter(m : IMap[String, Value]) = {
-      case v @ KI(num) => m.getOrElse("ii!" + num, v)
+      case v @ KI(num) => m.getOrElse("i!" + num, v)
     }
   }
 

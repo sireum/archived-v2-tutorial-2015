@@ -63,7 +63,7 @@ trait StressTest[S <: KiasanStatePart[S]] extends TestFramework {
 
   def translatePathConditionsToZ3(s : S) = {
     val sb = new StringBuilder
-    val et = MyIntExtension.z3BackEndPart.expTranslator(sb)
+    val et = MyIntExtension.z3BackEndPart.expTranslator(sb, mmapEmpty)
     for (pc <- s.pathConditions.reverse) {
       et(pc)
     }
