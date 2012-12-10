@@ -30,6 +30,8 @@ final class MyIntListExtension[S <: KiasanStatePart[S] with Heap[S]](
   import MyIntListExtension._
 
   def uriPath = URI_PATH
+  
+  import language.implicitConversions
 
   implicit def re2r(p : (S, Value)) = ilist(p)
 

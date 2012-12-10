@@ -28,6 +28,8 @@ object MyIntExtension extends ExtensionCompanion {
 
     val lineSep = System.getProperty("line.separator")
 
+    import language.implicitConversions
+    
     @inline
     implicit def i2s(i : Int) = i.toString
 
@@ -157,6 +159,8 @@ final class MyIntExtension[S <: KiasanStatePart[S]](
   import MyIntExtension._
 
   def uriPath = URI_PATH
+  
+  import language.implicitConversions
 
   implicit def re2r(p : (S, Value)) = ilist(p)
 

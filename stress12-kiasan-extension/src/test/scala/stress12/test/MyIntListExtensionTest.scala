@@ -37,6 +37,8 @@ class MyIntListExtensionExpTest
 
   def newExpEvaluator(s : S) = config.evaluator.mainEvaluator
 
+  import language.implicitConversions
+  
   implicit def rf2erf(f : ((S, V)) => Unit) =
     { rs : ISeq[(S, V)] => rs.foreach { f(_) } }
 

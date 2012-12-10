@@ -33,6 +33,8 @@ class MyIntExtensionExpTest
       rs.foreach(_.value is 1)
     }
 
+  import language.implicitConversions
+  
   implicit def rf2erf(f : ((S, V)) => Unit) =
     { rs : ISeq[(S, V)] => rs.foreach { f(_) } }
 

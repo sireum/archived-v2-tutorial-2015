@@ -36,7 +36,7 @@ object PilarEvalUtil {
         case Some(st) =>
           val pst = st.procedureSymbolTable(procUri)
           val ld = pst.location(0)
-          ld.name.map { nd => nd.resourceUri }
+          ld.name.map { nd => nd.uri }
         case _ =>
           None
       }
@@ -45,8 +45,8 @@ object PilarEvalUtil {
       st match {
         case Some(st) =>
           val pst = st.procedureSymbolTable(s.callStack.head.procedure)
-          val ld = pst.location(nu.resourceUri)
-          s.location(ld.name.map { nd => nd.resourceUri }, ld.index)
+          val ld = pst.location(nu.uri)
+          s.location(ld.name.map { nd => nd.uri }, ld.index)
         case _ =>
           s.location(Some(nu.name), 1)
       }
@@ -56,7 +56,7 @@ object PilarEvalUtil {
         case Some(st) =>
           val pst = st.procedureSymbolTable(s.callStack.head.procedure)
           val ld = pst.location(s.callStack.head.locationIndex + 1)
-          s.location(ld.name.map { nd => nd.resourceUri }, ld.index)
+          s.location(ld.name.map { nd => nd.uri }, ld.index)
         case _ =>
           s.location(Some("next"), 1)
       }

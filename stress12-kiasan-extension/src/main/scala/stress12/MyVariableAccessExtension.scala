@@ -21,8 +21,10 @@ class MyVariableAccessExtension[S <: State[S]](
 
   def uriPath = MyVariableAccessExtension.URI_PATH
 
-  def varUri(x : NameUser) = if (x.hasResourceInfo) x.resourceUri else x.name
+  def varUri(x : NameUser) = if (x.hasResourceInfo) x.uri else x.name
 
+  import language.implicitConversions
+  
   implicit def re2r(p : (S, Value)) = ilist(p)
   implicit def s2sr(s : S) = ilist(s)
 

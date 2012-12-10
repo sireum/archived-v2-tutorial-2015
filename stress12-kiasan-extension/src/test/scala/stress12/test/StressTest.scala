@@ -13,6 +13,8 @@ import stress12._
 trait StressTest[S <: KiasanStatePart[S]] extends TestFramework {
   type V = Value
 
+  import language.implicitConversions
+  
   case class ExpEvalResult(state : S, value : V)
   implicit def re2result(p : (S, V)) = ExpEvalResult(p._1, p._2)
   implicit def int2ci(n : Int) = CI(n)
@@ -21,8 +23,8 @@ trait StressTest[S <: KiasanStatePart[S]] extends TestFramework {
     def is(other : Any) {
       (o, other) match {
         case (v : V, n : Int)              => v should equal(CI(n))
-        case (pcs : Seq[Exp], s : String)  => pcs should equal(pc(s))
-        case (pcs : Seq[Exp], s : Product) => pcs should equal(pc(toSeq(s) : _*))
+        case (pcs : Seq[_], s : String)  => pcs should equal(pc(s))
+        case (pcs : Seq[_], s : Product) => pcs should equal(pc(toSeq(s) : _*))
         case _                             => o should equal(other)
       }
     }

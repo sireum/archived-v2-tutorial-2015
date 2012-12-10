@@ -63,7 +63,7 @@ trait EvaluatorTestFramework[S <: State[S]] extends TestFramework {
 
     def throws[T <: Throwable](f : => (T => Unit)) //
     (implicit manifest : Manifest[T]) : Unit = {
-      test(toString("throws " + manifest.erasure.getName)) {
+      test(toString("throws " + manifest.runtimeClass.getName)) {
         val t = intercept[T] {
           eval
         }
@@ -96,6 +96,8 @@ trait ExpEvaluatorTestFramework[S <: State[S], Re, R] extends EvaluatorTestFrame
   type Result = {
     def value : Value
   }
+  
+  import language.implicitConversions
 
   implicit def rf2erf(rf : Re => Unit) : R => Unit
 
@@ -146,6 +148,8 @@ trait ExpEvaluatorTestFramework[S <: State[S], Re, R] extends EvaluatorTestFrame
 }
 
 trait ActionEvaluatorTestFramework[S <: State[S], Se, SR] extends EvaluatorTestFramework[S] {
+  import language.implicitConversions
+  
   implicit def se2sr(se : Se => Unit) : SR => Unit
 
   def newActionEvaluator(s : S) : ActionEvaluator[S, SR]
@@ -193,6 +197,8 @@ trait ActionEvaluatorTestFramework[S <: State[S], Se, SR] extends EvaluatorTestF
 }
 
 trait JumpEvaluatorTestFramework[S <: State[S], Se, SR] extends EvaluatorTestFramework[S] {
+  import language.implicitConversions
+  
   implicit def se2sr(se : Se => Unit) : SR => Unit
 
   def newJumpEvaluator(s : S) : JumpEvaluator[S, SR]
@@ -241,6 +247,8 @@ trait JumpEvaluatorTestFramework[S <: State[S], Se, SR] extends EvaluatorTestFra
 
 trait TransformationEvaluatorTestFramework[S <: State[S], Se, SR]
     extends EvaluatorTestFramework[S] {
+  import language.implicitConversions
+  
   implicit def se2sr(se : Se => Unit) : SR => Unit
 
   def newTransformationEvaluator(s : S) : TransformationEvaluator[S, SR]
