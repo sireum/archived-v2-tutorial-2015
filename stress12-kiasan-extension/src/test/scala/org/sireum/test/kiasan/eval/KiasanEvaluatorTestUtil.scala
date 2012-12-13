@@ -42,18 +42,27 @@ object KiasanEvaluatorTestUtil {
   def newConfig[S <: State[S]](st : Option[SymbolTable],
                                extCompanions : ExtensionCompanion*) =
     new EvaluatorConfigurationImpl[S](st, new EvaluatorImpl,
-      new KiasanSemanticsExtensionModule[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] {},
+      new KiasanSemanticsExtensionModule[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] {
+        val sei = new KiasanSemanticsExtensionInitImpl[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] {}
+        val miners = ilist(KiasanExtensionMiner.mine[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] _,
+          ExtensionMiner.mine[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] _)
+      },
       extCompanions : _*)
 
   def newConfig[S <: State[S]](extCompanions : ExtensionCompanion*) =
     new EvaluatorConfigurationImpl[S](None, new EvaluatorImpl,
-      new KiasanSemanticsExtensionModule[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] {},
+      new KiasanSemanticsExtensionModule[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] {
+        val sei = new KiasanSemanticsExtensionInitImpl[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] {}
+        val miners = ilist(KiasanExtensionMiner.mine[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] _,
+          ExtensionMiner.mine[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] _)
+
+      },
       extCompanions : _*)
 
   def newEvaluator[S <: State[S]](
     extCompanions : ExtensionCompanion*) =
     newConfig[S](None, extCompanions : _*).evaluator.mainEvaluator
-    
+
   def newEvaluator[S <: State[S]](
     st : Option[SymbolTable],
     extCompanions : ExtensionCompanion*) =
