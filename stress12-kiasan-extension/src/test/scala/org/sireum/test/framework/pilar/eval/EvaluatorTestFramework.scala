@@ -299,14 +299,14 @@ trait TransformationEvaluatorTestFramework[S <: State[S], Se, SR]
       if (t.jump.isDefined)
         t.jump.get.commandDescriptorInfo(None, 0, 0, i)
 
-      te.evalTransformation(state, t)
+      te.evalTransformation(state, ComplexLocation(None, ilistEmpty, ilist(t)), t)
     }
   }
 }
 
-trait LocationEvaluatorTestFramework[S <: State[S]] extends EvaluatorTestFramework[S] {
+trait LocationEvaluatorTestFramework[S <: State[S], C] extends EvaluatorTestFramework[S] {
 
-  def newLocationEvaluator(s : S) : LocationEvaluator[S]
+  def newLocationEvaluator(s : S) : LocationEvaluator[S, C]
 
   def location(code : String) : EvalConfiguration[Transitions[S]] = {
     val prefix = casePrefix

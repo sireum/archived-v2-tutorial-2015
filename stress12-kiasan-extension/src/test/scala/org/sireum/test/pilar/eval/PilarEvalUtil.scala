@@ -94,7 +94,7 @@ object PilarEvalUtil {
     def symbolProvider : SymbolProvider[S] = new SymbolProviderImpl[S](st)
     def typeProvider : TypeProvider = new TypeProviderImpl
     def elseGuardExpander : Option[ElseGuardExpander] = None
-    def semanticExtensionConsumer(ev : Evaluator[S, R, SR]) : SemanticsExtensionConsumer[S, Value, R, C, SR] =
+    def semanticExtensionConsumer(ev : Evaluator[S, R, C, SR]) : SemanticsExtensionConsumer[S, Value, R, C, SR] =
       se(typeProvider, ev)
     def computeDisabledTransitions : Boolean = false
     def valueToV(v : Value) : Value = v
@@ -103,7 +103,7 @@ object PilarEvalUtil {
 
   final class EvaluatorConfigurationImpl[S <: State[S]](
     st : Option[SymbolTable],
-    ev : Evaluator[S, ISeq[(S, Value)], ISeq[S]] with EvaluatorModule[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]],
+    ev : Evaluator[S, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] with EvaluatorModule[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]],
     sem : SemanticsExtensionModule[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]],
     exts : ExtensionCompanion*)
       extends EvaluatorConfiguration[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]]
@@ -120,7 +120,7 @@ object PilarEvalUtil {
     val propertyMap = mmapEmpty[Property.Key, Any]
     def valueToV(v : Value) : Value = v
     def vToValue(v : Value) : Value = v
-    var evaluator : Evaluator[S, R, SR] = ev
+    var evaluator : Evaluator[S, R, C, SR] = ev
     var semanticsExtension : SemanticsExtensionConsumer[S, Value, R, C, SR] = null
 
     ev.initialize(this)
