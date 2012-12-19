@@ -1,7 +1,6 @@
 package stress12
 
 import org.sireum.extension._
-import org.sireum.extension.annotation._
 import org.sireum.kiasan.extension._
 import org.sireum.kiasan.state._
 import org.sireum.pilar.eval._

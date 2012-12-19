@@ -1,12 +1,11 @@
 package stress12
 
 import org.sireum.extension._
-import org.sireum.extension.annotation._
 import org.sireum.pilar.ast._
 import org.sireum.pilar.eval._
 import org.sireum.pilar.state._
+import org.sireum.kiasan.extension._
 import org.sireum.kiasan.extension.KiasanExtension._
-import org.sireum.kiasan.extension.annotation._
 import org.sireum.kiasan.state._
 import org.sireum.util._
 import org.sireum.topi.process._
@@ -169,12 +168,12 @@ final class MyIntExtension[S <: KiasanStatePart[S]](
     case (s, n) => (s, CI(n))
   }
 
-  @DefaultValue
+  @DefaultValueProvider
   def defValue : (S, ResourceUri) --> ISeq[(S, Value)] = {
     case (s, IntegerExtension.Type) => (s, CI(0))
   }
 
-  @FreshKiasanValue
+  @FreshKiasanValueProvider
   def freshKI : (S, ResourceUri) --> (S, Value) = {
     case (s, KINT_TYPE_URI) => {
       val (nextS, num) = s.next(KINT_TYPE_URI)
