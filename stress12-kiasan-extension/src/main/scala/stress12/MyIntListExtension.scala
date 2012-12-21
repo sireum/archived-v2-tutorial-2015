@@ -34,7 +34,10 @@ final class MyIntListExtension[S <: KiasanStatePart[S] with Heap[S]](
 
   implicit def re2r(p : (S, Value)) = ilist(p)
 
-  val heapConfig = config.adapter[EvaluatorHeapConfiguration[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]]]
+  val heapConfig = {
+    import EvaluatorHeapConfiguration._
+    config.heapConfig
+  }
   val lhid = heapConfig.heapId(listHeapIdKey)
 
   @NewList
@@ -58,7 +61,10 @@ final class MyIntListExtension[S <: KiasanStatePart[S] with Heap[S]](
       s.update(rv, intDataFieldUri, v)
   }
 
-  val sei = config.semanticsExtension.adapter[KiasanSemanticsExtensionConsumer[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]]]
+  val sei = {
+    import KiasanSemanticsExtensionConsumer._
+    config.semanticsExtension.kiasanSemanticsExtension
+  }
 
   @TopLevel @ExpExt
   def car : (S, Value) --> ISeq[(S, Value)] = {

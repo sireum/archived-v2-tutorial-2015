@@ -30,7 +30,10 @@ class MyIntListExtensionExpTest
       UriValueExtensionImpl,
       MyVariableAccessExtension)
 
-  val heapConfig = config.adapter[EvaluatorHeapConfiguration[S, V, ISeq[(S, V)], ISeq[(S, Boolean)], ISeq[S]]]
+  val heapConfig = {
+    import EvaluatorHeapConfiguration._
+    config.heapConfig
+  }
   val lhid = heapConfig.heapId(MyIntListExtension.listHeapIdKey)
 
   val state = new KiasanStateWithHeap(Vector(Vector()))
