@@ -29,8 +29,8 @@ object PilarEvalUtil {
     }
   }
 
-  class SymbolProviderImpl[S <: State[S]](st : Option[SymbolTable])
-      extends SymbolProvider[S] {
+  class PilarSymbolProviderImpl[S <: State[S]](st : Option[SymbolTable])
+      extends PilarSymbolProvider[S] {
     def initLocation(procUri : ResourceUri) : Option[ResourceUri] =
       st match {
         case Some(st) =>
@@ -95,7 +95,7 @@ object PilarEvalUtil {
     type R = ISeq[(S, Value)]
     type C = ISeq[(S, Boolean)]
     type SR = ISeq[S]
-    var symbolProvider : SymbolProvider[S] = new SymbolProviderImpl[S](st)
+    var symbolProvider : SymbolProvider[S] = new PilarSymbolProviderImpl[S](st)
     var typeProvider : TypeProvider = new TypeProviderImpl
     var elseGuardExpander : Option[ElseGuardExpander] = None
     var computeDisabledTransitions : Boolean = false
