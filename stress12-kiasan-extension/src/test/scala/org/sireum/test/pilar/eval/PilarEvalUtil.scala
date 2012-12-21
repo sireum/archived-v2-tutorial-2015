@@ -84,23 +84,6 @@ object PilarEvalUtil {
       }
   }
 
-  final class EvaluatorConfigImpl[S <: State[S]](
-    st : Option[SymbolTable],
-    se : SemanticsExtension[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]])
-      extends EvaluatorConfig[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] {
-    type R = ISeq[(S, Value)]
-    type C = ISeq[(S, Boolean)]
-    type SR = ISeq[S]
-    def symbolProvider : SymbolProvider[S] = new SymbolProviderImpl[S](st)
-    def typeProvider : TypeProvider = new TypeProviderImpl
-    def elseGuardExpander : Option[ElseGuardExpander] = None
-    def semanticExtensionConsumer(ev : Evaluator[S, R, C, SR]) : SemanticsExtensionConsumer[S, Value, R, C, SR] =
-      se(typeProvider, ev)
-    def computeDisabledTransitions : Boolean = false
-    def valueToV(v : Value) : Value = v
-    def vToValue(v : Value) : Value = v
-  }
-
   final class EvaluatorConfigurationImpl[S <: State[S]](
     st : Option[SymbolTable],
     ev : Evaluator[S, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] with EvaluatorModule[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]],
