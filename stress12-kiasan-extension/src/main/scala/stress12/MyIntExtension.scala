@@ -229,8 +229,8 @@ final class MyIntExtension[S <: KiasanStatePart[S]](
 
   def opRHelper(s : S, v : Value, opR : String, w : Value) : ISeq[(S, Value)] = {
     ilist(
-      (s.addPathCondition(BinaryExp(opR, v, w)).requestInconsistencyCheck, CI(1)),
-      (s.addPathCondition(BinaryExp(comp(opR), v, w)).requestInconsistencyCheck, CI(0)))
+      (s.addPathCondition(BinaryExp(opR, v, w)).requestInconsistencyCheck(), CI(1)),
+      (s.addPathCondition(BinaryExp(comp(opR), v, w)).requestInconsistencyCheck(), CI(0)))
   }
 
   // BEGIN TODO
