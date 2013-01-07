@@ -21,7 +21,7 @@ class MyIntExtensionExpTest
 
   type S = BasicKiasanState
 
-  val state = new BasicKiasanState()
+  val state = BasicKiasanState()
 
   def newExpEvaluator(s : S) =
     KiasanEvaluatorTestUtil.newEvaluator(

@@ -36,7 +36,7 @@ class MyIntListExtensionExpTest
   }
   val lhid = heapConfig.heapId(MyIntListExtension.listHeapIdKey)
 
-  val state = new KiasanStateWithHeap(Vector(Vector()))
+  val state = KiasanStateWithHeap(Vector(Vector()))
 
   def newExpEvaluator(s : S) = config.evaluator.mainEvaluator
 
