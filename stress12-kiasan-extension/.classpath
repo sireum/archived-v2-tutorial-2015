@@ -13,5 +13,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/sireum-kiasan"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/sireum-konkrit"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apfloat"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/sireum-core-test"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
