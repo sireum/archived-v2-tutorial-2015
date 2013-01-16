@@ -176,7 +176,7 @@ final class MyIntExtension[S <: KiasanStatePart[S]](
   @FreshKiasanValueProvider
   def freshKI : (S, ResourceUri) --> (S, Value) = {
     case (s, KINT_TYPE_URI) => {
-      val (nextS, num) = s.next(KINT_TYPE_URI)
+      val (nextS, num) = s.fresh(KINT_TYPE_URI)
       (nextS, KI(num))
     }
   }
