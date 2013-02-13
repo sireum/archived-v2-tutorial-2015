@@ -27,7 +27,7 @@ class MyIntListExtensionExpTest
     KiasanEvaluatorTestUtil.newConfig[S](
       MyIntListExtension,
       MyIntExtension,
-      UriValueExtensionImpl,
+      UriValueExtension,
       MyVariableAccessExtension)
 
   val heapConfig = {
