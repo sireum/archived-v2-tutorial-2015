@@ -141,11 +141,13 @@ object MyIntExtension extends ExtensionCompanion {
   val KINT_TYPE_URI = "pilar://typeext/" + URI_PATH + "/KInt"
 }
 
-sealed abstract class I extends NonReferenceValue
+sealed abstract class I extends ScalarValue
+
 // concrete integer
 case class CI(value : Int) extends I with ConcreteValue {
   def typeUri = MyIntExtension.CINT_TYPE_URI
 }
+
 // symbolic integer
 case class KI(num : Int) extends I with KiasanValue {
   def typeUri = MyIntExtension.KINT_TYPE_URI
