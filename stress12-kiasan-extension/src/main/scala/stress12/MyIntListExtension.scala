@@ -58,7 +58,7 @@ final class MyIntListExtension[S <: KiasanStatePart[S] with Heap[S]](
   @TopLevel @ActionExt
   def update : (S, Value, Value) --> ISeq[S] = {
     case (s, rv @ Heap.RV(hid, _), v : I) if hid == lhid =>
-      s.update(rv, intDataFieldUri, v)
+      s.updt(rv, intDataFieldUri, v)
   }
 
   val sei = {
@@ -69,11 +69,11 @@ final class MyIntListExtension[S <: KiasanStatePart[S] with Heap[S]](
   @TopLevel @ExpExt
   def car : (S, Value) --> ISeq[(S, Value)] = {
     case (s, rv @ Heap.RV(hid, _)) if hid == lhid =>
-      if (s.hasFieldValue(rv, intDataFieldUri))
+      if (s ? (rv, intDataFieldUri))
         (s, s.lookup(rv, intDataFieldUri))
       else {
         val (s2, alpha) = sei.freshKiasanValue(s, MyIntExtension.KINT_TYPE_URI)
-        val s3 = s2.update(rv, intDataFieldUri, alpha)
+        val s3 = s2.updt(rv, intDataFieldUri, alpha)
         (s3, alpha)
       }
   }
@@ -81,12 +81,12 @@ final class MyIntListExtension[S <: KiasanStatePart[S] with Heap[S]](
   @TopLevel @ExpExt
   def cdr : (S, Value) --> ISeq[(S, Value)] = {
     case (s, rv @ Heap.RV(hid, _)) if hid == lhid =>
-      if (s.hasFieldValue(rv, nextFieldUri))
+      if (s? (rv, nextFieldUri))
         (s, s.lookup(rv, nextFieldUri))
       else {
         val (newS, rv2) = s.newObject(lhid)
-        ilist((s.update(rv, nextFieldUri, NilValue), NilValue),
-          (newS.update(rv, nextFieldUri, rv2), rv2))
+        ilist((s.updt(rv, nextFieldUri, NilValue), NilValue),
+          (newS.updt(rv, nextFieldUri, rv2), rv2))
       }
   }
 

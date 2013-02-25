@@ -61,8 +61,8 @@ class MyIntListExtensionExpTest
     s.variable("@@y", rv)
   } gives "a new state" satisfying { s : S =>
     val rv = s.variable("@@y").asInstanceOf[ReferenceValue]
-    s.lookup(rv, intDataFieldUri) is 0
-    s.lookup(rv, nextFieldUri) is NilValue
+    s.lookup[Int](rv, intDataFieldUri) is 0
+    s.lookup[Value](rv, nextFieldUri) is NilValue
   }
 
   Evaluating action "update(@@y, 0);" on {
@@ -70,8 +70,8 @@ class MyIntListExtensionExpTest
     s.variable("@@y", rv)
   } gives "a new state" satisfying { s : S =>
     val rv = s.variable("@@y").asInstanceOf[ReferenceValue]
-    s.lookup(rv, intDataFieldUri) is 0
-    s.hasFieldValue(rv, nextFieldUri) is false
+    s.lookup[Int](rv, intDataFieldUri) is 0
+    s ? (rv, nextFieldUri) is false
   }
 
   {
@@ -92,8 +92,8 @@ class MyIntListExtensionExpTest
     s.variable("@@y", rv)
   } gives "alpha" satisfying { r : (S, V) =>
     val (s, rv) = (r.state, r.state.variable("@@y").asInstanceOf[ReferenceValue])
-    s.lookup(rv, intDataFieldUri) is alpha
-    s.hasFieldValue(rv, nextFieldUri) is false
+    s.lookup[Value](rv, intDataFieldUri) is alpha
+    s ? (rv, nextFieldUri) is false
     r.value is alpha
   }
 
@@ -113,13 +113,13 @@ class MyIntListExtensionExpTest
     s.variable("@@y", rv)
   } gives "nil,node" satisfying { r : (S, V) =>
     val (s, rv) = (r.state, r.state.variable("@@y").asInstanceOf[ReferenceValue])
-    s.hasFieldValue(rv, intDataFieldUri) is false
+    s ? (rv, intDataFieldUri) is false
     r.value match {
-      case NilValue => s.lookup(rv, nextFieldUri) is NilValue
+      case NilValue => s.lookup[Value](rv, nextFieldUri) is NilValue
       case rv2 : ReferenceValue =>
-        s.lookup(rv, nextFieldUri) is rv2
-        s.hasFieldValue(rv2, nextFieldUri) is false
-        s.hasFieldValue(rv2, intDataFieldUri) is false
+        s.lookup[Value](rv, nextFieldUri) is rv2
+        s ? (rv2, nextFieldUri) is false
+        s ? (rv2, intDataFieldUri) is false
     }
   }
 
