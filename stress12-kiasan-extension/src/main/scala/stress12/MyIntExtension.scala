@@ -166,7 +166,7 @@ final class MyIntExtension[S <: KiasanStatePart[S]](
   implicit def re2r(p : (S, Value)) = ilist(p)
 
   @Literal(classOf[Int])
-  def literal : (S, Int) --> ISeq[(S, Value)] = {
+  def literal : (S, Int) --> (S, Value) = {
     case (s, n) => (s, CI(n))
   }
 

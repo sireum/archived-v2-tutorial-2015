@@ -23,6 +23,8 @@ class MyIntExtensionExpTest
 
   val state = BasicKiasanState()
 
+  import org.sireum.pilar.state.State.UriAccess._
+  
   def newExpEvaluator(s : S) =
     KiasanEvaluatorTestUtil.newEvaluator(
       MyIntExtension,
@@ -65,7 +67,7 @@ class MyIntExtensionExpTest
   Evaluating expression "@@y * 3 + 2" on (state("@@y" -> alpha)) gives
     "gamma, where gamma=beta+2 and beta=alpha*3" satisfying { r : (S, V) =>
       r.value is gamma
-      r.state.pathConditions is ("gamma == beta + 2", "beta == alpha * 3")
+      r.state.pathConditions is ("beta == alpha * 3", "gamma == beta + 2")
       check(r.state) is TopiResult.SAT
       checkModel(r.state)
     }
@@ -87,7 +89,7 @@ class MyIntExtensionExpTest
 
   Evaluating expression "-(alpha * 2)" on (state()) gives "gamma, where gamma=-beta and beta=alpha*2" satisfying { r : (S, V) =>
     r.value is gamma
-    r.state.pathConditions is ("gamma == -beta", "beta == alpha * 2")
+    r.state.pathConditions is ("beta == alpha * 2", "gamma == -beta")
     check(r.state) is TopiResult.SAT
     checkModel(r.state)
   }
