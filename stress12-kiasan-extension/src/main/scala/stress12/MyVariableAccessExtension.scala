@@ -7,23 +7,20 @@ import org.sireum.pilar.state._
 import org.sireum.util._
 
 object MyVariableAccessExtension extends ExtensionCompanion {
-  def create[S <: State[S]](
-    config : EvaluatorConfiguration[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]]) =
-    new MyVariableAccessExtension(config)
+  def apply(ec : ExtensionConfig) = new MyVariableAccessExtension(ec)
 
   val URI_PATH = "stress12/MyVariableAccessExtension"
 }
 
-class MyVariableAccessExtension[S <: State[S]](
-  config : EvaluatorConfiguration[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]])
-    extends Extension[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] {
+class MyVariableAccessExtension[S <: State[S]](ec : ExtensionConfig)
+    extends Extension {
 
   def uriPath = MyVariableAccessExtension.URI_PATH
 
   def varUri(x : NameUser) = if (x.hasResourceInfo) x.uri else x.name
 
   import language.implicitConversions
-  
+
   implicit def re2r(p : (S, Value)) = ilist(p)
   implicit def s2sr(s : S) = ilist(s)
 

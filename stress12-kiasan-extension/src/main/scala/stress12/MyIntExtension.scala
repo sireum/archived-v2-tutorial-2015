@@ -13,9 +13,7 @@ import java.io._
 import org.sireum.topi.annotation._
 
 object MyIntExtension extends ExtensionCompanion {
-  def create[S <: KiasanStatePart[S]](
-    config : EvaluatorConfiguration[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]]) =
-    new MyIntExtension(config)
+  def apply(ec : ExtensionConfig) = new MyIntExtension(ec)
 
   @BackEnd(value = "Z3", mode = "Process")
   def z3BackEndPart = new TopiProcess.BackEndPart {
@@ -28,7 +26,7 @@ object MyIntExtension extends ExtensionCompanion {
     val lineSep = System.getProperty("line.separator")
 
     import language.implicitConversions
-    
+
     @inline
     implicit def i2s(i : Int) = i.toString
 
@@ -153,14 +151,13 @@ case class KI(num : Int) extends I with KiasanValue {
   def typeUri = MyIntExtension.KINT_TYPE_URI
 }
 
-final class MyIntExtension[S <: KiasanStatePart[S]](
-  config : EvaluatorConfiguration[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]])
-    extends Extension[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] {
+final class MyIntExtension[S <: KiasanStatePart[S]](ec : ExtensionConfig)
+    extends Extension {
 
   import MyIntExtension._
 
   def uriPath = URI_PATH
-  
+
   import language.implicitConversions
 
   implicit def re2r(p : (S, Value)) = ilist(p)

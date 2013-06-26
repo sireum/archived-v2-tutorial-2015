@@ -8,9 +8,7 @@ import org.sireum.pilar.state._
 import org.sireum.util._
 
 object MyIntListExtension extends ExtensionCompanion {
-  def create[S <: KiasanStatePart[S] with Heap[S]](
-    config : EvaluatorConfiguration[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]]) =
-    new MyIntListExtension(config)
+  def apply(ec : ExtensionConfig) = new MyIntListExtension(ec)
 
   val URI_PATH = "stress12/MyIntListExtension"
   val KINT_LIST_TYPE_URI = "pilar://typeext/" + URI_PATH + "/KIntList"
@@ -23,20 +21,19 @@ object MyIntListExtension extends ExtensionCompanion {
 object NilValue extends ConcreteValue with ReferenceValue
 
 final class MyIntListExtension[S <: KiasanStatePart[S] with Heap[S]](
-  config : EvaluatorConfiguration[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]])
-    extends Extension[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]] {
+    ec : ExtensionConfig) extends Extension {
 
   import MyIntListExtension._
 
   def uriPath = URI_PATH
-  
+
   import language.implicitConversions
 
   implicit def re2r(p : (S, Value)) = ilist(p)
 
   val heapConfig = {
-    import EvaluatorHeapConfiguration._
-    config.heapConfig
+    import EvaluatorHeapConfig._
+    ec.heapEvalConfig
   }
   val lhid = heapConfig.heapId(listHeapIdKey)
 
@@ -62,8 +59,9 @@ final class MyIntListExtension[S <: KiasanStatePart[S] with Heap[S]](
   }
 
   val sei = {
+    import SemanticsExtensionConfig._
     import KiasanSemanticsExtensionConsumer._
-    config.semanticsExtension.kiasanSemanticsExtension
+    ec.semanticsExtension[S, Value, ISeq[(S, Value)], ISeq[(S, Boolean)], ISeq[S]].kiasanSemanticsExtension
   }
 
   @TopLevel @ExpExt
@@ -81,7 +79,7 @@ final class MyIntListExtension[S <: KiasanStatePart[S] with Heap[S]](
   @TopLevel @ExpExt
   def cdr : (S, Value) --> ISeq[(S, Value)] = {
     case (s, rv @ Heap.RV(hid, _)) if hid == lhid =>
-      if (s? (rv, nextFieldUri))
+      if (s ? (rv, nextFieldUri))
         (s, s.lookup(rv, nextFieldUri))
       else {
         val (newS, rv2) = s.newObject(lhid)
@@ -101,9 +99,9 @@ final class MyIntListExtension[S <: KiasanStatePart[S] with Heap[S]](
   def getElementAt : (S, Value, Value) --> ISeq[(S, Value)] = {
     case (s, rv @ Heap.RV(hid, _), CI(value)) if hid == lhid =>
       val (sNodes, sErrorNodes) = getNode(s, rv, value)
-      assert (sErrorNodes.isEmpty)
+      assert(sErrorNodes.isEmpty)
       val result = sNodes.flatMap(car)
-      assert (!result.isEmpty)
+      assert(!result.isEmpty)
       result
     case (s, rv @ Heap.RV(hid, _), KI(num)) if hid == lhid =>
       ilistEmpty // ??

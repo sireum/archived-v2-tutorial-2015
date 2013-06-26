@@ -31,8 +31,8 @@ class MyIntListExtensionExpTest
       MyVariableAccessExtension)
 
   val heapConfig = {
-    import EvaluatorHeapConfiguration._
-    config.heapConfig
+    import EvaluatorHeapConfig._
+    config.heapEvalConfig
   }
   val lhid = heapConfig.heapId(MyIntListExtension.listHeapIdKey)
 
@@ -41,7 +41,7 @@ class MyIntListExtensionExpTest
   def newExpEvaluator(s : S) = config.evaluator.mainEvaluator
 
   import language.implicitConversions
-  
+
   implicit def rf2erf(f : ((S, V)) => Unit) =
     { rs : ISeq[(S, V)] => rs.foreach { f(_) } }
 
@@ -150,15 +150,15 @@ class MyIntListExtensionExpTest
     println(r.state)
     println(r.value)
   }
-  
+
   Evaluating expression "getElementAt(`[1, 2], 0)" on state gives "1" satisfying { r : (S, V) =>
     r.value is 1
   }
-  
+
   Evaluating expression "getElementAt(`[1, 2], 1)" on state gives "2" satisfying { r : (S, V) =>
     r.value is 2
   }
-  
+
   Evaluating expression "getElementAt(`[1, 2], 2)" on state gives "1" satisfying { r : (S, V) =>
     r.value is 2
   }
