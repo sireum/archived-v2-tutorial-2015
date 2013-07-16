@@ -159,8 +159,10 @@ class MyIntListExtensionExpTest
     r.value is 2
   }
 
-  Evaluating expression "getElementAt(`[1, 2], 2)" on state gives "1" satisfying { r : (S, V) =>
-    r.value is 2
+  // This is a breaking test by design
+  Evaluating expression "getElementAt(`[1, 2], 2)" on state gives "2" failing { t =>
+    assert(t.isInstanceOf[AssertionError])
   }
+
   // END TODO
 }
