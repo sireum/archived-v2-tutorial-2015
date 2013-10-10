@@ -52,10 +52,15 @@ trait StressTest[S <: KiasanStatePart[S]] extends TestFramework {
     rewriter(eOpt.get).asInstanceOf[Exp]
   }
 
-  def check(s : S) = topi.check(s.pathConditions.reverse)
+  def check(s : S) = topi(_.check(s.pathConditions.reverse))
+  
+  def topi[T](f : Topi => T) = {
+    val topi = createTopi
+    try f(topi) finally topi.close
+  } 
 
   def getModel(s : S) = {
-    val m = topi.getModel(s.pathConditions.reverse)
+    val m = topi(_.getModel(s.pathConditions.reverse))
     val result = mmapEmpty[Value, Value]
     for ((k, v) <- m.get) {
       result(KI(k.substring(2).toInt)) = CI(v.asInstanceOf[Topi.Integer].value.toInt)
@@ -75,5 +80,5 @@ trait StressTest[S <: KiasanStatePart[S]] extends TestFramework {
     sb.toString
   }
 
-  val topi = Topi.create(TopiSolver.Z3, TopiMode.Process, 10000, MyIntExtension)
+  def createTopi = Topi.create(TopiSolver.Z3, TopiMode.Process, 10000, MyIntExtension)
 }
